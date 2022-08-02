@@ -1,0 +1,32 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# BigArray
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The `BigArray` package implements a `r BiocStyle::CRANpkg("DelayedArray")` for the
+`r BiocStyle::CRANpkg("bigmemory")` R-packages for handling massive out-of-memory
+matrices.
+
+You can install the development version of `BigArray` from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("MalteThodberg/BigArray")
+```
+
+See the vignette for examples on how to use `BigArray`.
