@@ -1,0 +1,26 @@
+Package: BigArray
+Type: Package
+Title: Using bigmemory as a DelayedArray Backend
+Version: 0.1.1
+Author: Malte Thodberg
+Maintainer: Malte Thodberg <maltethodberg@gmail.com>
+Description: Implements a DelayedArray backend for reading and writing dense matrices in the bigmemory format. Supports bigmemory-backed SummarizedExperiment objects.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    DelayedArray
+Imports: 
+    checkmate,
+    bigmemory,
+    methods,
+    tools,
+    S4Vectors
+RoxygenNote: 7.2.1
+Suggests: 
+    BiocStyle,
+    DelayedMatrixStats,
+    knitr,
+    rmarkdown,
+    SummarizedExperiment
+VignetteBuilder: knitr

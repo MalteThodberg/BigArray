@@ -1,0 +1,146 @@
+---
+title: BigArray - A DelayedArray backend for bigmemory
+author:
+- name: Malte Thodberg
+  email: maltethodberg@gmail.com
+output:
+  BiocStyle::html_document:
+    toc_float: yes
+package: BigArray
+vignette: >
+  %\VignetteIndexEntry{User guide}
+  %\VignetteEncoding{UTF-8}  
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r, echo=FALSE, results="hide"}
+knitr::opts_chunk$set(error=FALSE, message=FALSE, warning=FALSE)
+library(BiocStyle)
+```
+
+# Introduction
+
+The FileArray package implements a `r CRANpkg("DelayedArray")` for the
+`r CRANpkg("bigmemory")` R-packages for handling massive out-of-memory
+matrices.
+
+# Installation
+
+Install from github with devtools:
+
+```{r eval=FALSE}
+devtools::install_github("MalteThodberg/BigArray")
+```
+
+Load the package using:
+
+```{r}
+library(BigArray)
+```
+
+# Creating a `BigArray`
+
+There a multiple ways to create a BigArray from and R matrix:
+
+```{r}
+X <- matrix(rnorm(1000), ncol=10)
+```
+
+Using the the `realization` machinery by coercing the matrix to a
+`BigArray`, which will generate a temporary file backing file:
+
+```{r}
+as(X, "BigArray")
+```
+
+If you want to specify the location of the backing file you can use use
+`writeBigArray`
+
+```{r}
+my_filematrix <- tempfile()
+writeBigArray(X, filepath = my_filematrix)
+```
+
+Integer matrices are supported:
+
+```{r}
+Y <- round(X)
+storage.mode(Y) <- "integer"
+as(Y, "BigArray")
+```
+
+To use dimension names, you must first allow it via global settings from the bigmemory-package:
+
+```{r}
+# Use global settings to allow dim names
+library(bigmemory)
+options(bigmemory.allow.dimnames=TRUE)
+
+# Set colnames and write
+rownames(X) <- sprintf("GENE_%i", seq_len(nrow(X)))
+colnames(X) <- sprintf("SAMP_%i", seq_len(ncol(X)))
+writeBigArray(X)
+```
+
+Alternatively you can directly use functions from `bigmemory` and point
+to the backing file afterwards.
+
+```{r}
+my_filematrix <- tempfile()
+
+bm <-  filebacked.big.matrix(
+    nrow = 100,
+    ncol = 25,
+    type = "double",
+    backingfile = paste0(basename(my_filematrix), ".bmat"),
+    backingpath = dirname(my_filematrix),
+    descriptorfile = paste0(basename(my_filematrix), ".desc.txt"))
+
+# Construct from bm
+BigArray(my_filematrix)
+```
+
+Large .txt files can be processed similarly using
+`bigmemory::read.big.matrix`.
+
+# Manipulating `BigArray`s using delayed operations and DelayedMatrixStats
+
+`BigArray`s are simply `DelayedArray` objects and can be manipulated as
+such. The usual conventions for extracting data from matrix-like objects
+work as expected:
+
+```{r}
+out <- as(X, "BigArray")
+dim(out)
+head(rownames(out))
+head(out[,1])
+```
+
+We can also perform manipulations like subsetting and arithmetic. Note
+that these operations do not affect the data in the filematrix backend;
+rather, they are delayed until the values are explicitly required, hence
+the creation of the `DelayedMatrix` object.
+
+```{r}
+out[1:5,1:5] 
+out * 2
+out %*% runif(ncol(out))
+```
+
+We can also calculate matrix summary statistics using the `r Biocpkg("DelayedMatrixStats")` package, which supports block-wise processing:
+
+```{r}
+library(DelayedMatrixStats)
+colSums2(out)
+rowSums2(out)
+rowVars(out)
+```
+
+# Session information
+
+```{r}
+sessionInfo()
+```
