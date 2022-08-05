@@ -23,16 +23,18 @@ library(BiocStyle)
 
 # Introduction
 
-The FileArray package implements a `r CRANpkg("DelayedArray")` for the
+The `BigArray` package implements a `r Biocpkg("DelayedArray")` backend for the
 `r CRANpkg("bigmemory")` R-packages for handling massive out-of-memory
-matrices.
+matrices. See https://petehaitch.github.io/BioC2020_DelayedArray_workshop/articles/Effectively_using_the_DelayedArray_framework_for_users.html for more information on `DelayedArray`.
 
 # Installation
 
 Install from github with devtools:
 
 ```{r eval=FALSE}
-devtools::install_github("MalteThodberg/BigArray")
+devtools::install_github("MalteThodberg/BigArray", 
+                         dependencies = TRUE, 
+                         build_vignettes = TRUE)
 ```
 
 Load the package using:
@@ -120,7 +122,7 @@ head(out[,1])
 ```
 
 We can also perform manipulations like subsetting and arithmetic. Note
-that these operations do not affect the data in the filematrix backend;
+that these operations do not affect the data in the bigmemory backend;
 rather, they are delayed until the values are explicitly required, hence
 the creation of the `DelayedMatrix` object.
 
@@ -138,6 +140,10 @@ colSums2(out)
 rowSums2(out)
 rowVars(out)
 ```
+
+# Using BigArray with SummarizedExperiment
+
+TBA
 
 # Session information
 

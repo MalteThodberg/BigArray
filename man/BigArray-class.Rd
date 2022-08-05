@@ -6,7 +6,7 @@
 \alias{BigMatrix-class}
 \alias{BigArray}
 \alias{writeBigArray}
-\title{BigArray: DelayedArray backend for BigMatrix.}
+\title{BigArray: A DelayedArray backend for bigmemory}
 \usage{
 BigArray(filepath)
 
@@ -15,16 +15,19 @@ writeBigArray(x, filepath = tempfile())
 \arguments{
 \item{filepath}{character: Path to the basename of a BigMatrix}
 
-\item{x}{matrix, DelayedArray, etc.: matrix-like object to be written block-by-block to disk.}
+\item{x}{matrix, DelayedArray, etc.: matrix-like object to be written
+block-by-block to disk.}
 }
 \value{
 A BigMatrix object (A 2D BigArray)
 }
 \description{
-BigArray allows you to use the BigMatrix package as a backend for DelayedArrays, similarly to the default HDF5Array package.
+BigArray allows you to use the bigmemory package as a backend for
+DelayedArrays, similarly to the default HDF5Array package.
 }
 \details{
-Details on BigArraySeed, BigArray, BigMatrix, FileRealizationSink, read-only / open connections, to be added later...
+Details on BigArraySeed, BigArray, BigMatrix, FileRealizationSink,
+  read-only / open connections, to be added later...
 }
 \examples{
 #### Examples ####

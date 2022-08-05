@@ -15,9 +15,11 @@ Imports:
     bigmemory,
     methods,
     tools,
-    S4Vectors
+    S4Vectors,
+    MatrixGenerics
 RoxygenNote: 7.2.1
 Suggests: 
+    biganalytics,
     BiocStyle,
     DelayedMatrixStats,
     knitr,

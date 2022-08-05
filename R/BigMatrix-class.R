@@ -1,14 +1,17 @@
 #### BigArray and BigMatrix ####
 
-#' BigArray: DelayedArray backend for BigMatrix.
+#' BigArray: A DelayedArray backend for bigmemory
 #'
-#' BigArray allows you to use the BigMatrix package as a backend for DelayedArrays, similarly to the default HDF5Array package.
+#' BigArray allows you to use the bigmemory package as a backend for
+#' DelayedArrays, similarly to the default HDF5Array package.
 #'
 #' @param filepath character: Path to the basename of a BigMatrix
-#' @param x matrix, DelayedArray, etc.: matrix-like object to be written block-by-block to disk.
+#' @param x matrix, DelayedArray, etc.: matrix-like object to be written
+#'   block-by-block to disk.
 #' @return A BigMatrix object (A 2D BigArray)
 #'
-#' @details Details on BigArraySeed, BigArray, BigMatrix, FileRealizationSink, read-only / open connections, to be added later...
+#' @details Details on BigArraySeed, BigArray, BigMatrix, FileRealizationSink,
+#'   read-only / open connections, to be added later...
 #'
 #' @export
 #' @examples
@@ -63,12 +66,12 @@ setMethod("DelayedArray", "BigArraySeed",
 #' @rdname BigArray-class
 #' @export
 BigArray <- function(filepath){
-    checkmate::assertString(filepath)
 
     # Allow BigArraySeed
     if (is(filepath, "BigArraySeed")){
         seed <- filepath
     }else{
+        checkmate::assertString(filepath)
         seed <- BigArraySeed(filepath)
     }
 
@@ -81,3 +84,15 @@ BigArray <- function(filepath){
 setMethod("matrixClass", "BigArray", function(x) "BigMatrix")
 setAs("BigArray", "BigMatrix", function(from) new("BigMatrix", from))
 setAs("BigMatrix", "BigArray", function(from) from)  # no-op
+
+# Compatibility with regular big.matrix
+#' @export
+setAs("BigMatrix", "big.matrix", function(from){
+    attach.big.matrix(paste0(seed(from)@filepath, ".desc.txt"))
+})
+
+#' @export
+setAs("big.matrix", "BigArray", function(from) BigArray(.sink2seed(from)))
+
+#' @export
+setAs("big.matrix", "BigMatrix", function(from) as(from, "BigArray"))

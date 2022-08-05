@@ -18,15 +18,15 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The `BigArray` package implements a `r BiocStyle::CRANpkg("DelayedArray")` for the
-`r BiocStyle::CRANpkg("bigmemory")` R-packages for handling massive out-of-memory
-matrices.
+The `BigArray` package implements a `r BiocStyle::Biocpkg("DelayedArray")` backend for the
+`r BiocStyle::CRANpkg("bigmemory")` R-package for handling massive out-of-memory
+matrices. `BigArray` interoperates with the `r BiocStyle::Biocpkg("DelayedMatrixStats")` and `r BiocStyle::Biocpkg("SummarizedExperiment")` R-packages.
 
 You can install the development version of `BigArray` from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("MalteThodberg/BigArray")
+devtools::install_github("MalteThodberg/BigArray", dependencies=TRUE, build_vignettes=TRUE)
 ```
 
 See the vignette for examples on how to use `BigArray`.
